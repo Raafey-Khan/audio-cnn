@@ -11,9 +11,10 @@ import { Progress } from "~/components/ui/progress";
 import Waveform from "~/components/Waveform";
 
 interface Prediction {
-  class: string;
+  class_name: string;
   confidence: number;
 }
+
 
 interface LayerData {
   shape: number[];
@@ -142,11 +143,11 @@ export default function HomePage() {
           ),
         );
 
-        const response = await fetch("inference_url_here", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ audio_data: base64String }),
-        });
+       const response = await fetch("inference_url_here", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ audio_data: base64String }),
+});
 
         if (!response.ok) {
           throw new Error(`API error ${response.statusText}`);
@@ -233,11 +234,11 @@ export default function HomePage() {
               <CardContent>
                 <div className="space-y-3">
                   {vizData.predictions.slice(0, 3).map((pred, i) => (
-                    <div key={pred.class} className="space-y-2">
+                    <div key={pred.class_name} className="space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="text-md font-medium text-stone-700">
-                          {getEmojiForClass(pred.class)}{" "}
-                          <span>{pred.class.replaceAll("_", " ")}</span>
+                          {getEmojiForClass(pred.class_name)}{" "}
+                          <span>{pred.class_name.replaceAll("_", " ")}</span>
                         </div>
                         <Badge variant={i === 0 ? "default" : "secondary"}>
                           {(pred.confidence * 100).toFixed(1)}%
